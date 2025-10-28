@@ -1,14 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Heart, Menu, X, Search, User } from 'lucide-react'
+import { ShoppingCart, Heart, Menu, X, Search, User, LogOut } from 'lucide-react'
+import { useDebounce } from '../hooks/useDebounce'
+import { useAuth } from '../context/AuthContext'
+import LoginModal from './auth/LoginModal'
+import SignupModal from './auth/SignupModal'
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
+    const [showLoginModal, setShowLoginModal] = useState(false)
+    const [showSignupModal, setShowSignupModal] = useState(false)
     const navigate = useNavigate()
+    const debouncedSearchQuery = useDebounce(searchQuery, 200)
     const cartCount = useSelector(state => state.cart.items.reduce((sum, item) => sum + item.quantity, 0))
+    const { user, logout, isAuthenticated } = useAuth()
+
+    // Auto-search when debounced query changes
+    useEffect(() => {
+        if (debouncedSearchQuery.trim()) {
+            const params = new URLSearchParams()
+            params.set('search', debouncedSearchQuery.trim())
+            navigate(`/products?${params.toString()}`)
+        }
+    }, [debouncedSearchQuery, navigate])
 
     return (
         <motion.nav
@@ -92,36 +109,39 @@ export default function Navbar() {
                                 className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        const params = new URLSearchParams()
-                                        if (searchQuery.trim()) params.set('search', searchQuery.trim())
-                                        navigate(`/products?${params.toString()}`)
-                                    }
-                                }}
                             />
-                            <button
-                                onClick={() => {
-                                    const params = new URLSearchParams()
-                                    if (searchQuery.trim()) params.set('search', searchQuery.trim())
-                                    navigate(`/products?${params.toString()}`)
-                                }}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-primary transition-colors"
-                            >
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400">
                                 <Search size={18} />
-                            </button>
+                            </div>
                         </div>
                     </div>
 
                     {/* Icons */}
                     <div className="flex items-center space-x-2">
-                        <motion.button
-                            className="relative p-2 rounded-full hover:bg-purple-100 transition-colors"
-                            whileHover={{ scale: 1.1, rotate: 360 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <User size={24} className="text-gray-700" />
-                        </motion.button>
+                        {isAuthenticated ? (
+                            <div className="flex items-center space-x-2">
+                                <div className="hidden sm:block text-right">
+                                    <div className="text-sm font-medium">{user?.name}</div>
+                                </div>
+                                <motion.button
+                                    onClick={logout}
+                                    className="relative p-2 rounded-full hover:bg-red-100 transition-colors"
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    <LogOut size={24} className="text-gray-700" />
+                                </motion.button>
+                            </div>
+                        ) : (
+                            <motion.button
+                                onClick={() => setShowLoginModal(true)}
+                                className="relative p-2 rounded-full hover:bg-purple-100 transition-colors"
+                                whileHover={{ scale: 1.1, rotate: 360 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <User size={24} className="text-gray-700" />
+                            </motion.button>
+                        )}
 
                         <motion.div
                             whileHover={{ scale: 1.1 }}
@@ -194,6 +214,31 @@ export default function Navbar() {
                     )}
                 </AnimatePresence>
             </div>
+
+            {/* Auth Modals */}
+            <LoginModal
+                isOpen={showLoginModal}
+                onClose={() => setShowLoginModal(false)}
+                onSwitchToSignup={() => {
+                    setShowLoginModal(false)
+                    setShowSignupModal(true)
+                }}
+                onLoginSuccess={(user) => {
+                    console.log('User logged in:', user)
+                }}
+            />
+
+            <SignupModal
+                isOpen={showSignupModal}
+                onClose={() => setShowSignupModal(false)}
+                onSwitchToLogin={() => {
+                    setShowSignupModal(false)
+                    setShowLoginModal(true)
+                }}
+                onSignupSuccess={(user) => {
+                    console.log('User signed up:', user)
+                }}
+            />
         </motion.nav>
     )
 }

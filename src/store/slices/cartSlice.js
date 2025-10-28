@@ -4,14 +4,27 @@ const initialState = {
     items: [],
     loading: false,
     error: null,
+    userId: null, // Track which user's cart this is
 }
 
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+        setUserCart: (state, action) => {
+            const { userId, items } = action.payload
+            state.userId = userId
+            state.items = items || []
+        },
         addToCart: (state, action) => {
-            const { productId, quantity, size, color } = action.payload
+            const { productId, quantity, size, color, userId } = action.payload
+
+            // If this is a different user, clear the cart first
+            if (state.userId !== userId) {
+                state.userId = userId
+                state.items = []
+            }
+
             const existingItem = state.items.find(
                 item => item.productId === productId && item.size === size && item.color === color
             )
@@ -34,6 +47,7 @@ const cartSlice = createSlice({
         },
         clearCart: (state) => {
             state.items = []
+            state.userId = null
         },
         setLoading: (state, action) => {
             state.loading = action.payload
@@ -45,6 +59,7 @@ const cartSlice = createSlice({
 })
 
 export const {
+    setUserCart,
     addToCart,
     removeFromCart,
     updateQuantity,

@@ -14,46 +14,66 @@ import OrderSuccess from './pages/OrderSuccess'
 import AdminLogin from './pages/admin/AdminLogin'
 import Dashboard from './pages/admin/Dashboard'
 import AdminProducts from './pages/admin/Products'
+import ProtectedRoute from './components/ProtectedRoute'
 import { store } from './store/store'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
     return (
         <Provider store={store}>
-            <Router>
-                <div className="min-h-screen flex flex-col">
-                    <Routes>
-                        {/* Admin Routes */}
-                        <Route path="/admin/login" element={<AdminLogin />} />
-                        <Route path="/admin/dashboard" element={<Dashboard />} />
-                        <Route path="/admin/products" element={<AdminProducts />} />
+            <AuthProvider>
+                <Router>
+                    <div className="min-h-screen flex flex-col">
+                        <Routes>
+                            {/* Admin Routes */}
+                            <Route path="/admin/login" element={<AdminLogin />} />
+                            <Route path="/admin/dashboard" element={<Dashboard />} />
+                            <Route path="/admin/products" element={<AdminProducts />} />
 
-                        {/* Public Routes */}
-                        <Route path="*" element={
-                            <>
-                                <Navbar />
-                                <motion.main
-                                    className="flex-grow"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    <Routes>
-                                        <Route path="/" element={<Home />} />
-                                        <Route path="/products" element={<Products />} />
-                                        <Route path="/categories" element={<Categories />} />
-                                        <Route path="/products/:id" element={<ProductDetail />} />
-                                        <Route path="/cart" element={<Cart />} />
-                                        <Route path="/checkout" element={<Checkout />} />
-                                        <Route path="/order-success/:orderId" element={<OrderSuccess />} />
-                                        <Route path="/wishlist" element={<Wishlist />} />
-                                    </Routes>
-                                </motion.main>
-                                <Footer />
-                            </>
-                        } />
-                    </Routes>
-                </div>
-            </Router>
+                            {/* Public Routes */}
+                            <Route path="*" element={
+                                <>
+                                    <Navbar />
+                                    <motion.main
+                                        className="flex-grow"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        <Routes>
+                                            <Route path="/" element={<Home />} />
+                                            <Route path="/products" element={<Products />} />
+                                            <Route path="/categories" element={<Categories />} />
+                                            <Route path="/products/:id" element={<ProductDetail />} />
+                                            <Route path="/cart" element={
+                                                <ProtectedRoute>
+                                                    <Cart />
+                                                </ProtectedRoute>
+                                            } />
+                                            <Route path="/checkout" element={
+                                                <ProtectedRoute>
+                                                    <Checkout />
+                                                </ProtectedRoute>
+                                            } />
+                                            <Route path="/order-success/:orderId" element={
+                                                <ProtectedRoute>
+                                                    <OrderSuccess />
+                                                </ProtectedRoute>
+                                            } />
+                                            <Route path="/wishlist" element={
+                                                <ProtectedRoute>
+                                                    <Wishlist />
+                                                </ProtectedRoute>
+                                            } />
+                                        </Routes>
+                                    </motion.main>
+                                    <Footer />
+                                </>
+                            } />
+                        </Routes>
+                    </div>
+                </Router>
+            </AuthProvider>
         </Provider>
     )
 }

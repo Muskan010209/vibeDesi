@@ -6,11 +6,13 @@ import { addToCart } from '../store/slices/cartSlice'
 import { addToWishlist } from '../store/slices/wishlistSlice'
 import { useState } from 'react'
 import SafeImage from './SafeImage'
+import { useAuth } from '../context/AuthContext'
 
 export default function ProductCard({ product }) {
     const dispatch = useDispatch()
     const wishlistItems = useSelector(state => state.wishlist.items)
     const [isHovered, setIsHovered] = useState(false)
+    const { user, isAuthenticated } = useAuth()
 
     // Mouse position tracking for 3D effect
     const x = useMotionValue(0)
@@ -24,11 +26,25 @@ export default function ProductCard({ product }) {
 
     const handleAddToCart = (e) => {
         e.preventDefault()
-        dispatch(addToCart({ productId: product._id, quantity: 1, size: 'M', color: product.colors[0] }))
+        if (!isAuthenticated) {
+            alert('Please login to add items to cart')
+            return
+        }
+        dispatch(addToCart({
+            productId: product._id,
+            quantity: 1,
+            size: 'M',
+            color: product.colors[0],
+            userId: user._id
+        }))
     }
 
     const handleWishlist = (e) => {
         e.preventDefault()
+        if (!isAuthenticated) {
+            alert('Please login to add items to wishlist')
+            return
+        }
         dispatch(addToWishlist(product._id))
     }
 

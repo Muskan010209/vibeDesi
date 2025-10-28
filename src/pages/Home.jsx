@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Star, TrendingUp, Sparkles, Crown, Heart as HeartIcon } from 'lucide-react'
+import { ArrowRight, Star, TrendingUp, Sparkles, Crown, Heart as HeartIcon, Truck, Shield, RefreshCw, Award, Users, Clock } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
 import { useState, useEffect } from 'react'
 import { useProducts } from '../hooks/useProducts'
@@ -371,6 +371,157 @@ export default function Home() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* Services Section */}
+            <section className="py-20 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            Our Services
+                        </h2>
+                        <p className="text-xl text-gray-600">Everything you need for a perfect shopping experience</p>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {[
+                            { icon: <Truck size={40} />, title: 'Free Shipping', desc: 'On orders above ₹999', color: 'from-blue-500 to-blue-600' },
+                            { icon: <Shield size={40} />, title: 'Secure Payment', desc: '100% safe transactions', color: 'from-green-500 to-green-600' },
+                            { icon: <RefreshCw size={40} />, title: 'Easy Returns', desc: '30-day return policy', color: 'from-purple-500 to-purple-600' },
+                            { icon: <Award size={40} />, title: 'Quality Assured', desc: 'Premium materials only', color: 'from-orange-500 to-orange-600' }
+                        ].map((service, index) => (
+                            <motion.div
+                                key={service.title}
+                                className="text-center p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-100 hover:border-gray-200 transition-all duration-300"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.05, y: -5 }}
+                            >
+                                <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r ${service.color} text-white mb-6`}>
+                                    {service.icon}
+                                </div>
+                                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                                <p className="text-gray-600">{service.desc}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Testimonials Section */}
+            <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            What Our Customers Say
+                        </h2>
+                        <p className="text-xl text-gray-600">Real reviews from real customers</p>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            { name: 'Priya Sharma', location: 'Mumbai', rating: 5, text: 'Absolutely love the quality and designs! The kurtis are so comfortable and beautiful.' },
+                            { name: 'Anjali Patel', location: 'Delhi', rating: 5, text: 'Fast delivery and excellent customer service. Will definitely order again!' },
+                            { name: 'Riya Singh', location: 'Bangalore', rating: 5, text: 'The dupatta sets are stunning. Perfect for special occasions.' }
+                        ].map((testimonial, index) => (
+                            <motion.div
+                                key={testimonial.name}
+                                className="bg-white p-8 rounded-2xl shadow-lg"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02 }}
+                            >
+                                <div className="flex items-center mb-4">
+                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                        <Star key={i} size={20} className="text-yellow-400 fill-current" />
+                                    ))}
+                                </div>
+                                <p className="text-gray-700 mb-6 italic">"{testimonial.text}"</p>
+                                <div className="flex items-center">
+                                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                                        {testimonial.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold">{testimonial.name}</h4>
+                                        <p className="text-gray-500 text-sm">{testimonial.location}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Newsletter Section */}
+            <section className="py-20 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                    >
+                        <h2 className="text-4xl font-bold mb-4">Stay Updated</h2>
+                        <p className="text-xl mb-8 text-white/90">Get the latest updates on new collections and exclusive offers</p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                className="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+                            />
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-white text-purple-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
+                            >
+                                Subscribe
+                            </motion.button>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Stats Section */}
+            {/* <section className="py-16 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 text-gray-700">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        {[
+                            { icon: <Users size={40} />, number: '10K+', label: 'Happy Customers' },
+                            { icon: <Award size={40} />, number: '500+', label: 'Products' },
+                            { icon: <Star size={40} />, number: '4.8★', label: 'Average Rating' },
+                            { icon: <Clock size={40} />, number: '24/7', label: 'Customer Support' }
+                        ].map((stat, index) => (
+                            <motion.div
+                                key={stat.label}
+                                className="p-6"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <div className="text-purple-400 mb-4 flex justify-center">
+                                    {stat.icon}
+                                </div>
+                                <div className="text-3xl font-bold mb-2">{stat.number}</div>
+                                <div className="text-gray-400">{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section> */}
         </div>
     )
 }
