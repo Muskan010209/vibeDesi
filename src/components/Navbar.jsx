@@ -89,7 +89,7 @@ export default function Navbar() {
                             <input
                                 type="text"
                                 placeholder="Search for ethnic wear..."
-                                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={(e) => {
@@ -106,9 +106,9 @@ export default function Navbar() {
                                     if (searchQuery.trim()) params.set('search', searchQuery.trim())
                                     navigate(`/products?${params.toString()}`)
                                 }}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-sm bg-primary text-white rounded-md"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-primary transition-colors"
                             >
-                                Search
+                                <Search size={18} />
                             </button>
                         </div>
                     </div>
