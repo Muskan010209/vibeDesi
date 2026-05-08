@@ -122,7 +122,7 @@ export default function Home() {
                             with <span className="text-yellow-300 relative">
                                 vibeDesi
                                 <motion.div
-                                    className="absolute -bottom-1 left-0 right-0 h-3 bg-gradient-to-r from-yellow-300/50 to-orange-300/50 blur-sm"
+                                    className="absolute left-0 right-0 h-1 bg-gradient-to-r from-yellow-300/50 to-orange-300/50 rounded-full"
                                     animate={{ scaleX: [1, 1.1, 1] }}
                                     transition={{ duration: 2, repeat: Infinity }}
                                 />

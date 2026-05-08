@@ -27,7 +27,7 @@ export default function Categories() {
             }))
 
             try {
-                const res = await api.get(`/products?category=${category}`)
+                const res = await axios.get(`/api/products?category=${category}`)
                 setCategories(prev => ({
                     ...prev,
                     [category]: { products: res.data.data.slice(0, 4), loading: false }
@@ -49,12 +49,7 @@ export default function Categories() {
         'combo-set': 'Combo Sets'
     }
 
-    const categoryDemoImages = {
-        'kurti': 'https://images.unsplash.com/photo-1596755389378-c31cbec6be2f?w=400&h=300&fit=crop',
-        'dupatta-set': 'https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=400&h=300&fit=crop',
-        'salwar-suit': 'https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=400&h=300&fit=crop',
-        'combo-set': 'https://images.unsplash.com/photo-1602810319071-f81e9f8e4a2a?w=400&h=300&fit=crop'
-    }
+
 
     return (
         <motion.div
