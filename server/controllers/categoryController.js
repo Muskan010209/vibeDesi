@@ -7,11 +7,17 @@ exports.list = asyncHandler(async (req, res) => {
 });
 
 exports.create = asyncHandler(async (req, res) => {
+    if (req.file) {
+        req.body.image = `/uploads/categories/${req.file.filename}`;
+    }
     const category = await CategoryService.create(req.body);
     res.status(201).json({ success: true, data: category });
 });
 
 exports.update = asyncHandler(async (req, res) => {
+    if (req.file) {
+        req.body.image = `/uploads/categories/${req.file.filename}`;
+    }
     const category = await CategoryService.update(req.params.id, req.body);
     res.status(200).json({ success: true, data: category });
 });

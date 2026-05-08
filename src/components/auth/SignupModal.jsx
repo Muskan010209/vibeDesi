@@ -47,7 +47,7 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin, onSignup
             if (res.data.success) {
                 localStorage.setItem('token', res.data.token)
                 localStorage.setItem('user', JSON.stringify(res.data.user))
-                onSignupSuccess?.(res.data.user)
+                onSignupSuccess?.(res.data.user, res.data.token)
                 onClose()
                 setFormData({ name: '', email: '', password: '', confirmPassword: '' })
             }

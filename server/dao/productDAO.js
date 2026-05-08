@@ -5,8 +5,16 @@ class ProductDAO {
         return await Product.find(filters);
     }
 
+    static async findAllWithPopulate(filters = {}, populateField = '') {
+        return await Product.find(filters).populate(populateField);
+    }
+
     static async findById(id) {
         return await Product.findById(id);
+    }
+
+    static async findByIdWithPopulate(id, populateField = '') {
+        return await Product.findById(id).populate(populateField);
     }
 
     static async create(productData) {

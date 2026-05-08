@@ -1,6 +1,30 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Product = require('../models/Product');
+const Category = require('../models/Category');
+
+const categories = [
+    {
+        name: "Kurtis",
+        slug: "kurti",
+        image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=500"
+    },
+    {
+        name: "Dupatta Sets",
+        slug: "dupatta-set",
+        image: "https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=500"
+    },
+    {
+        name: "Salwar Suits",
+        slug: "salwar-suit",
+        image: "https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=500"
+    },
+    {
+        name: "Combo Sets",
+        slug: "combo-set",
+        image: "https://images.unsplash.com/photo-1602810319071-f81e9f8e4a2a?w=500"
+    }
+];
 
 const products = [
     {
@@ -8,7 +32,7 @@ const products = [
         description: "Beautiful traditional Rajasthani kurti with intricate patterns and vibrant colors",
         price: 1299,
         discount: 20,
-        category: "kurti",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL"],
         colors: ["Red", "Blue", "Pink", "Yellow"],
         images: ["https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=500", "https://images.unsplash.com/photo-1596755389378-c31cbec6be2f?w=500"],
@@ -24,7 +48,7 @@ const products = [
         description: "Elegant dupatta set perfect for special occasions with matching accessories",
         price: 2499,
         discount: 15,
-        category: "dupatta-set",
+        category: null, // Will be set to category ObjectId
         size: ["One Size"],
         colors: ["Red", "Green", "Gold"],
         images: ["https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500", "https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=500"],
@@ -40,7 +64,7 @@ const products = [
         description: "Comfortable salwar suit with beautiful embroidery work",
         price: 3499,
         discount: 25,
-        category: "salwar-suit",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL", "XXL"],
         colors: ["Navy Blue", "Maroon", "Teal"],
         images: ["https://images.unsplash.com/photo-1594633313239-bab3825d0caf?w=500", "https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=500"],
@@ -56,7 +80,7 @@ const products = [
         description: "Complete festive ensemble with kurti, dupatta and accessories",
         price: 4999,
         discount: 30,
-        category: "combo-set",
+        category: null, // Will be set to category ObjectId
         size: ["M", "L", "XL"],
         colors: ["Red", "Orange", "Pink", "Green"],
         images: ["https://images.unsplash.com/photo-1602810319071-f81e9f8e4a2a?w=500", "https://images.unsplash.com/photo-1617196034796-73dfa1e5f1e6?w=500"],
@@ -72,7 +96,7 @@ const products = [
         description: "Comfortable everyday wear kurti in soft cotton fabric",
         price: 899,
         discount: 10,
-        category: "kurti",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL", "XXL"],
         colors: ["White", "Beige", "Light Blue", "Lavender"],
         images: ["https://images.unsplash.com/photo-1596755389378-c31cbec6be2f?w=500", "https://images.unsplash.com/photo-1625456791758-6a56f5d3c6f9?w=500"],
@@ -88,7 +112,7 @@ const products = [
         description: "Luxurious lehenga style dupatta with intricate work",
         price: 3899,
         discount: 20,
-        category: "dupatta-set",
+        category: null, // Will be set to category ObjectId
         size: ["One Size"],
         colors: ["Red", "Green", "Purple"],
         images: ["https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=500", "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=500"],
@@ -104,7 +128,7 @@ const products = [
         description: "Beautiful kurti with floral embroidery and mirror work",
         price: 1599,
         discount: 18,
-        category: "kurti",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL", "XXL"],
         colors: ["Navy Blue", "Maroon", "Teal"],
         images: ["https://images.unsplash.com/photo-1596755389378-c31cbec6be2f?w=500", "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=500"],
@@ -120,7 +144,7 @@ const products = [
         description: "Elegant georgette dupatta set with digital prints",
         price: 1799,
         discount: 12,
-        category: "dupatta-set",
+        category: null, // Will be set to category ObjectId
         size: ["One Size"],
         colors: ["Pink", "Purple", "Blue", "Green"],
         images: ["https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=500", "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500"],
@@ -136,7 +160,7 @@ const products = [
         description: "Comfortable printed salwar suit for everyday wear",
         price: 2299,
         discount: 22,
-        category: "salwar-suit",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL"],
         colors: ["Beige", "Pastel Blue", "Peach"],
         images: ["https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=500", "https://images.unsplash.com/photo-1594633313239-bab3825d0caf?w=500"],
@@ -152,7 +176,7 @@ const products = [
         description: "Stylish Anarkali kurti with embellishments and flowy design",
         price: 3199,
         discount: 20,
-        category: "kurti",
+        category: null, // Will be set to category ObjectId
         size: ["M", "L", "XL", "XXL"],
         colors: ["Red", "Green", "Blue", "Pink"],
         images: ["https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=500", "https://images.unsplash.com/photo-1625456791758-6a56f5d3c6f9?w=500"],
@@ -168,7 +192,7 @@ const products = [
         description: "Premium wedding dupatta set with heavy embroidery",
         price: 5999,
         discount: 25,
-        category: "dupatta-set",
+        category: null, // Will be set to category ObjectId
         size: ["One Size"],
         colors: ["Red", "Gold", "Maroon", "Navy"],
         images: ["https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=500", "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500"],
@@ -184,7 +208,7 @@ const products = [
         description: "Glittery party wear salwar suit for special occasions",
         price: 4199,
         discount: 28,
-        category: "salwar-suit",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL", "XXL"],
         colors: ["Gold", "Silver", "Rose Gold"],
         images: ["https://images.unsplash.com/photo-1594633313239-bab3825d0caf?w=500", "https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=500"],
@@ -200,7 +224,7 @@ const products = [
         description: "Rajasthani traditional bandhej print kurti with vibrant colors",
         price: 1399,
         discount: 15,
-        category: "kurti",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL"],
         colors: ["Yellow", "Orange", "Pink"],
         images: ["https://images.unsplash.com/photo-1596755389378-c31cbec6be2f?w=500", "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=500"],
@@ -216,7 +240,7 @@ const products = [
         description: "Complete festive set with kurti, dupatta, and matching jewelry",
         price: 7499,
         discount: 35,
-        category: "combo-set",
+        category: null, // Will be set to category ObjectId
         size: ["M", "L", "XL"],
         colors: ["Red", "Maroon", "Navy"],
         images: ["https://images.unsplash.com/photo-1602810319071-f81e9f8e4a2a?w=500", "https://images.unsplash.com/photo-1617196034796-73dfa1e5f1e6?w=500"],
@@ -232,7 +256,7 @@ const products = [
         description: "Trendy palazzo suit with contemporary design",
         price: 1899,
         discount: 10,
-        category: "salwar-suit",
+        category: null, // Will be set to category ObjectId
         size: ["S", "M", "L", "XL", "XXL"],
         colors: ["Black", "White", "Gray"],
         images: ["https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=500", "https://images.unsplash.com/photo-1594633313239-bab3825d0caf?w=500"],
@@ -247,23 +271,51 @@ const products = [
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://kamuskan01_db_user:mr94OLLkobjp0oEB@vibe.pij4q2a.mongodb.net/vibeDesi?retryWrites=true&w=majority';
 
-const seedProducts = async () => {
+const seedDatabase = async () => {
     try {
         await mongoose.connect(MONGODB_URI);
         console.log('Connected to MongoDB Atlas');
+
+        // Clear existing data
+        await Category.deleteMany({});
         await Product.deleteMany({});
-        await Product.insertMany(products);
+
+        // Create categories first
+        const createdCategories = await Category.insertMany(categories);
+        console.log('Categories seeded successfully');
+
+        // Create a map of category slugs to ObjectIds
+        const categoryMap = {};
+        createdCategories.forEach(cat => {
+            categoryMap[cat.slug] = cat._id;
+        });
+
+        // Update products with category ObjectIds
+        const productsWithCategories = products.map(product => {
+            const categorySlug = product.name.toLowerCase().includes('kurti') ? 'kurti' :
+                product.name.toLowerCase().includes('dupatta') ? 'dupatta-set' :
+                    product.name.toLowerCase().includes('salwar') ? 'salwar-suit' :
+                        'combo-set';
+            return {
+                ...product,
+                category: categoryMap[categorySlug]
+            };
+        });
+
+        // Insert products
+        await Product.insertMany(productsWithCategories);
         console.log('Products seeded successfully');
+
         process.exit(0);
     } catch (error) {
-        console.error('Error seeding products:', error);
+        console.error('Error seeding database:', error);
         process.exit(1);
     }
 };
 
 if (require.main === module) {
-    seedProducts();
+    seedDatabase();
 }
 
-module.exports = seedProducts;
+module.exports = seedDatabase;
 

@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux'
 import { motion } from 'framer-motion'
 import { ShoppingCart, Heart, Star, Truck, Shield, RefreshCw, Package } from 'lucide-react'
 import { addToCart } from '../store/slices/cartSlice'
-import axios from 'axios'
+import { useAuth } from '../context/AuthContext'
+import api from '../utils/axios'
 import SafeImage from '../components/SafeImage'
 
 export default function ProductDetail() {
     const { id } = useParams()
     const dispatch = useDispatch()
+    const { user, isAuthenticated } = useAuth()
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
     const [selectedSize, setSelectedSize] = useState('')
@@ -23,10 +25,11 @@ export default function ProductDetail() {
 
     const fetchProduct = async () => {
         try {
-            const res = await axios.get(`/api/products/${id}`)
-            setProduct(res.data)
-            setSelectedSize(res.data.size[0])
-            setSelectedColor(res.data.colors[0])
+            const res = await api.get(`/products/${id}`)
+            const productData = res.data.data
+            setProduct(productData)
+            setSelectedSize(productData.size?.[0] || '')
+            setSelectedColor(productData.colors?.[0] || '')
         } catch (error) {
             console.error('Error fetching product:', error)
         } finally {
@@ -35,11 +38,16 @@ export default function ProductDetail() {
     }
 
     const handleAddToCart = () => {
+        if (!isAuthenticated) {
+            alert('Please login to add items to cart')
+            return
+        }
+
         if (!selectedSize || !selectedColor) {
             alert('Please select size and color')
             return
         }
-        dispatch(addToCart({ productId: product._id, quantity, size: selectedSize, color: selectedColor }))
+        dispatch(addToCart({ productId: product._id, quantity, size: selectedSize, color: selectedColor, userId: user?.id }))
     }
 
     if (loading) {

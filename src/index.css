@@ -10,9 +10,49 @@
     body {
         @apply bg-gray-50 text-gray-900;
     }
+
+    /* Global scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-slate-100 rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gradient-to-b from-purple-500 to-pink-500 rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply from-purple-600 to-pink-600;
+    }
+
+    /* Firefox scrollbar */
+    * {
+        scrollbar-color: linear-gradient(to bottom, #a855f7, #ec4899) #f1f5f9;
+        scrollbar-width: thin;
+    }
 }
 
 @layer components {
+    .scrollbar-custom {
+        @apply overflow-y-auto pr-2;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        @apply bg-gradient-to-b from-purple-400 to-pink-400 rounded-full hover:from-purple-500 hover:to-pink-500;
+    }
+
     .btn-primary {
         @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg;
     }

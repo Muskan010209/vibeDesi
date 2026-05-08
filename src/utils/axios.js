@@ -2,10 +2,7 @@ import axios from 'axios'
 
 // Create axios instance
 const api = axios.create({
-    baseURL: '/api',
-    headers: {
-        'Content-Type': 'application/json'
-    }
+    baseURL: '/api'
 })
 
 // Add token to requests automatically
@@ -14,6 +11,10 @@ api.interceptors.request.use(
         const token = localStorage.getItem('token')
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
+        }
+
+        if (!config.headers['Content-Type'] && !config.headers['content-type']) {
+            config.headers['Content-Type'] = 'application/json'
         }
         return config
     },

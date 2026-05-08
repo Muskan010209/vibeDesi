@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Heart, Trash2, ArrowRight } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export default function Wishlist() {
     const wishlistItems = useSelector(state => state.wishlist.items)
@@ -19,10 +19,10 @@ export default function Wishlist() {
         try {
             setLoading(true)
             const productPromises = wishlistItems.map(id =>
-                axios.get(`/api/products/${id}`)
+                api.get(`/products/${id}`)
             )
             const responses = await Promise.all(productPromises)
-            setProducts(responses.map(res => res.data))
+            setProducts(responses.map(res => res.data.data))
         } catch (error) {
             console.error('Error fetching wishlist products:', error)
         } finally {

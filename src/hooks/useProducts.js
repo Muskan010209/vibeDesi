@@ -1,26 +1,24 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { setProducts, setLoading } from '../store/slices/productsSlice'
 import api from '../utils/axios'
+import { setProducts, setLoading, setError } from '../store/slices/productsSlice'
 
-export const useProducts = () => {
+export function useProducts() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        fetchProducts()
-    }, [])
-
-    const fetchProducts = async () => {
-        try {
+        const fetchProducts = async () => {
             dispatch(setLoading(true))
-            const res = await api.get('/products')
-            dispatch(setProducts(res.data.data))
-        } catch (error) {
-            console.error('Error fetching products:', error)
-        } finally {
-            dispatch(setLoading(false))
+            try {
+                const res = await api.get('/products')
+                dispatch(setProducts(res.data.data))
+            } catch (error) {
+                dispatch(setError(error.response?.data?.message || 'Failed to load products'))
+            } finally {
+                dispatch(setLoading(false))
+            }
         }
-    }
+
+        fetchProducts()
+    }, [dispatch])
 }
-
-

@@ -16,10 +16,16 @@ export default function Products() {
         maxPrice: '',
         sort: 'newest'
     })
+    const [categoryOptions, setCategoryOptions] = useState([{ value: '', label: 'All Categories' }])
+    const [categoriesLoading, setCategoriesLoading] = useState(true)
 
     useEffect(() => {
         fetchProducts()
     }, [filters])
+
+    useEffect(() => {
+        fetchCategories()
+    }, [])
 
     // Keep URL in sync when category or search changes
     useEffect(() => {
@@ -62,14 +68,20 @@ export default function Products() {
         }
     }
 
-    const categories = [
-        { value: '', label: 'All Categories' },
-        { value: 'kurti', label: 'Kurtis' },
-        { value: 'dupatta-set', label: 'Dupatta Sets' },
-        { value: 'salwar-suit', label: 'Salwar Suits' },
-        { value: 'combo-set', label: 'Combo Sets' },
-        { value: 'accessories', label: 'Accessories' }
-    ]
+    const fetchCategories = async () => {
+        try {
+            const res = await api.get('/categories')
+            const opts = [{ value: '', label: 'All Categories' }, ...res.data.data.map(category => ({
+                value: category.slug,
+                label: category.name
+            }))]
+            setCategoryOptions(opts)
+        } catch (error) {
+            console.error('Error fetching categories:', error)
+        } finally {
+            setCategoriesLoading(false)
+        }
+    }
 
     const sortOptions = [
         { value: 'newest', label: 'Newest First' },
@@ -100,7 +112,7 @@ export default function Products() {
                                     onChange={(e) => setFilters({ ...filters, category: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary"
                                 >
-                                    {categories.map(cat => (
+                                    {categoryOptions.map(cat => (
                                         <option key={cat.value} value={cat.value}>{cat.label}</option>
                                     ))}
                                 </select>

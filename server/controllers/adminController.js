@@ -11,9 +11,12 @@ exports.getDashboardStats = asyncHandler(async (req, res, next) => {
     const orderStats = await OrderDAO.getStats();
 
     // Get products count by category
-    const categoryStats = await ProductDAO.findAll();
-    const categoryCount = categoryStats.reduce((acc, product) => {
-        acc[product.category] = (acc[product.category] || 0) + 1;
+    const products = await ProductDAO.findAllWithPopulate({}, 'category');
+    const categoryCount = products.reduce((acc, product) => {
+        const category = product.category;
+        if (!category) return acc;
+        const key = category.slug || category.name || 'uncategorized';
+        acc[key] = (acc[key] || 0) + 1;
         return acc;
     }, {});
 
@@ -21,8 +24,8 @@ exports.getDashboardStats = asyncHandler(async (req, res, next) => {
     const recentOrders = await OrderDAO.findAll();
     const recentOrdersSlice = recentOrders.slice(0, 5);
 
-    // Get top products by price
-    const topProducts = await ProductDAO.findAll();
+    // Get top products by discount amount
+    const topProducts = await ProductDAO.findAllWithPopulate({}, 'category');
     topProducts.sort((a, b) => (b.price * b.discount / 100) - (a.price * a.discount / 100));
     const top5Products = topProducts.slice(0, 5);
 

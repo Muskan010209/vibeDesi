@@ -16,7 +16,7 @@ export default function Navbar() {
     const navigate = useNavigate()
     const debouncedSearchQuery = useDebounce(searchQuery, 200)
     const cartCount = useSelector(state => state.cart.items.reduce((sum, item) => sum + item.quantity, 0))
-    const { user, logout, isAuthenticated } = useAuth()
+    const { user, logout, login, isAuthenticated } = useAuth()
 
     // Auto-search when debounced query changes
     useEffect(() => {
@@ -223,9 +223,7 @@ export default function Navbar() {
                     setShowLoginModal(false)
                     setShowSignupModal(true)
                 }}
-                onLoginSuccess={(user) => {
-                    console.log('User logged in:', user)
-                }}
+                onLoginSuccess={login}
             />
 
             <SignupModal
@@ -235,9 +233,7 @@ export default function Navbar() {
                     setShowSignupModal(false)
                     setShowLoginModal(true)
                 }}
-                onSignupSuccess={(user) => {
-                    console.log('User signed up:', user)
-                }}
+                onSignupSuccess={login}
             />
         </motion.nav>
     )

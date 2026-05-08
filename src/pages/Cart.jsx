@@ -98,7 +98,7 @@ export default function Cart() {
                                                         {item.name}
                                                     </h3>
                                                 </Link>
-                                                <p className="text-gray-600 mb-2">{item.category}</p>
+                                                <p className="text-gray-600 mb-2">{typeof item.category === 'string' ? item.category : item.category?.name || 'Uncategorized'}</p>
                                                 <div className="flex gap-4 text-sm text-gray-600 mb-4">
                                                     <span>Size: <span className="font-semibold">{item.size}</span></span>
                                                     <span>Color: <span className="font-semibold">{item.color}</span></span>

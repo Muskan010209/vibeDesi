@@ -214,7 +214,7 @@ export default function ProductCard({ product }) {
                                 className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 rounded-full text-xs font-semibold capitalize"
                                 whileHover={{ scale: 1.1 }}
                             >
-                                {product.category}
+                                {typeof product.category === 'string' ? product.category : product.category?.name || 'Uncategorized'}
                             </motion.span>
                         </div>
 

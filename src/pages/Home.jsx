@@ -24,10 +24,10 @@ export default function Home() {
     }, [])
 
     const categories = [
-        { name: 'Kurtis', image: 'https://images.unsplash.com/photo-1596755389378-c31cbec6be2f?w=300', link: '/products?category=kurti' },
-        { name: 'Dupatta Sets', image: 'https://images.unsplash.com/photo-1618354691373-d851c3c3a0f2?w=300', link: '/products?category=dupatta-set' },
-        { name: 'Salwar Suits', image: 'https://images.unsplash.com/photo-1506629905617-5f8e7e2a9a6c?w=300', link: '/products?category=salwar-suit' },
-        { name: 'Combo Sets', image: 'https://images.unsplash.com/photo-1602810319071-f81e9f8e4a2a?w=300', link: '/products?category=combo-set' },
+        { name: 'Kurtis', link: '/products?category=kurti' },
+        { name: 'Dupatta Sets', link: '/products?category=dupatta-set' },
+        { name: 'Salwar Suits', link: '/products?category=salwar-suit' },
+        { name: 'Combo Sets', link: '/products?category=combo-set' },
     ]
 
     const features = [
@@ -243,11 +243,7 @@ export default function Home() {
                                                 whileHover={{ scale: 1.2, rotate: 5 }}
                                                 transition={{ duration: 0.5 }}
                                             >
-                                                <img
-                                                    src={category.image}
-                                                    alt={category.name}
-                                                    className="w-full h-full object-cover"
-                                                />
+
                                             </motion.div>
                                             {/* Gradient overlay */}
                                             <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 via-pink-700/40 to-transparent"></div>

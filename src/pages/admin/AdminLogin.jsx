@@ -3,12 +3,14 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { Shield, Loader } from 'lucide-react'
 import api from '../../utils/axios'
+import { useAuth } from '../../context/AuthContext'
 
 export default function AdminLogin() {
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const navigate = useNavigate()
+    const { login } = useAuth()
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -23,13 +25,11 @@ export default function AdminLogin() {
             const res = await api.post('/auth/login', formData)
 
             if (res.data.success) {
-                localStorage.setItem('token', res.data.token)
-                localStorage.setItem('user', JSON.stringify(res.data.user))
-
-                if (res.data.user.role === 'admin') {
-                    navigate('/admin/dashboard')
-                } else {
+                if (res.data.user.role !== 'admin') {
                     setError('Access denied. Admin access required.')
+                } else {
+                    login(res.data.user, res.data.token)
+                    navigate('/admin/dashboard')
                 }
             }
         } catch (err) {

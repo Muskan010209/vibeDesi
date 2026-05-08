@@ -14,6 +14,7 @@ import OrderSuccess from './pages/OrderSuccess'
 import AdminLogin from './pages/admin/AdminLogin'
 import Dashboard from './pages/admin/Dashboard'
 import AdminProducts from './pages/admin/Products'
+import AdminCategories from './pages/admin/Categories'
 import ProtectedRoute from './components/ProtectedRoute'
 import { store } from './store/store'
 import { AuthProvider } from './context/AuthContext'
@@ -29,6 +30,7 @@ function App() {
                             <Route path="/admin/login" element={<AdminLogin />} />
                             <Route path="/admin/dashboard" element={<Dashboard />} />
                             <Route path="/admin/products" element={<AdminProducts />} />
+                            <Route path="/admin/categories" element={<AdminCategories />} />
 
                             {/* Public Routes */}
                             <Route path="*" element={
