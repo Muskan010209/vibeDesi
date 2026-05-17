@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, PlusCircle } from 'lucide-react'
@@ -44,7 +45,7 @@ export default function AddProductForm({ isOpen, onClose, existingProduct, onPro
                     description: existingProduct.description || '',
                     price: existingProduct.price || '',
                     discount: existingProduct.discount || 0,
-                    category: typeof existingProduct.category === 'string' ? existingProduct.category : existingProduct.category?.slug || '',
+                    category: existingProduct.category?._id || existingProduct.category || '',
                     size: Array.isArray(existingProduct.size) ? existingProduct.size.join(',') : existingProduct.size || 'S,M,L',
                     colors: Array.isArray(existingProduct.colors) ? existingProduct.colors.join(',') : existingProduct.colors || 'Red,Blue,Green',
                     images: Array.isArray(existingProduct.images) ? existingProduct.images.join(',') : existingProduct.images || '',
@@ -145,7 +146,7 @@ export default function AddProductForm({ isOpen, onClose, existingProduct, onPro
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
-                        className="w-full max-w-3xl overflow-hidden rounded-[2rem] bg-white shadow-2xl"
+                        className="w-full max-w-3xl overflow-hidden rounded-[2rem] bg-white shadow-2xl max-h-[80vh] flex flex-col"
                     >
                         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                             <div>
@@ -161,7 +162,7 @@ export default function AddProductForm({ isOpen, onClose, existingProduct, onPro
                             </button>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-5 px-6 py-6">
+                        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-5 px-6 py-6">
                             {error && <div className="rounded-2xl bg-red-50 px-4 py-3 text-red-700">{error}</div>}
 
                             <div className="grid gap-4 lg:grid-cols-2">
@@ -202,7 +203,7 @@ export default function AddProductForm({ isOpen, onClose, existingProduct, onPro
                                     >
                                         <option value="">Select a category</option>
                                         {categories.map((category) => (
-                                            <option key={category._id} value={category.slug}>
+                                            <option key={category._id} value={category._id}>
                                                 {category.name}
                                             </option>
                                         ))}
