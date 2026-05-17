@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import api from '../utils/axios'
-import { Filter, Grid, List } from 'lucide-react'
+import { Filter, Grid, KeySquare, List } from 'lucide-react'
 
 export default function Products() {
     const [products, setProducts] = useState([])
@@ -190,5 +190,3 @@ export default function Products() {
         </div>
     )
 }
-
-
