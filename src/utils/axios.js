@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Create axios instance
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL?.trim() || '/api'
+    baseURL: import.meta.env.VITE_API_URL?.trim() || (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? '/api' : 'https://vibe-desi-one.vercel.app/api')
 })
 
 // Add token to requests automatically
